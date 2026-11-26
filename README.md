@@ -1,56 +1,36 @@
-# sv
+# Funneler
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A quick example using vite and sveltekit of how to integrate Tailscale's Funnel feature so that you can expose an application to the web for development purposes.
 
-## Creating a project
+## Why?
 
-If you're seeing this, you've probably already done this step. Congrats!
+You're probably already running tailscale for remote access and tailnetting; Funnel can really help out if you need to test Oauth flows, webhooks, or just showing a local app you're working on with a friend remotely.
 
-```sh
-# create a new project
-npx sv create my-app
+## Pre-requisites
+
+* a working install of tailscale connected to a tailnet
+* Funnel needs to be enabled on the tailnet:
+  * > Use the tailscale funnel command to enable Funnel. The command triggers a web interface that prompts you to approve enabling Funnel. After you approve it, Tailscale will create valid HTTPS certificates for your tailnet and add a funnel node attribute to your tailnet policy file. [ref](https://tailscale.com/docs/features/tailscale-funnel#get-started-with-funnel)
+
+## Get started
+
+```bash
+$ git clone https://github.com/jeffgts/funneler.git
+$ cd ./funneler && pnpm install
+$ pnpm run funnel
 ```
 
-To recreate this project with the same configuration:
+## How it works
 
-```sh
-# recreate this project
-pnpm dlx sv@1.7.1 create --template minimal --types ts --install pnpm funneler
-```
+The funneler.ts script takes arguments for a/ the port you want the development server to run on, as well as the specific package.jsopn script you want to run. It takes these and then runs `tailscale funnel`, which creates a world-visible tunnel from a TLS-terminated url to the local system on the port you specified. The script also sets the port value as an environment variable, which is then read by the vite configurtation file and used when starting up the development server.
 
-## Adding features
+Under the hood the script uses the command `tailscale whoami` to get additional information from the current tailnet so we can deterministically set the 'remote' / proxied url to use.
 
-Add features to your project with `sv add`:
+### Prior art
 
-```sh
-npx sv add
-```
+* ngrok
+* Cloudflare tunnels
+* localtunnel
+* Tunnelbear
+* etc.
 
-For example, to add Tailwind CSS:
-
-```sh
-npx sv add tailwindcss
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"funnel": "node ./funneler.ts --port=3000 --script=dev"
+		"funnel": "node ./funneler.ts --port=3000 --script=dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",

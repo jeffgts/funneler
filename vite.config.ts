@@ -8,16 +8,12 @@ if (process.env.TAILNET_HOSTNAME) {
 	allowedHosts.push(process.env.TAILNET_HOSTNAME);
 }
 
-let PORT = 5173;
-
-if (process.env.APP_PORT) {
-	PORT = Number(process.env.APP_PORT);
-}
+const APP_PORT = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 5173;
 
 export default defineConfig({
 	server: {
 		host: '127.0.0.1',
-		port: PORT,
+		port: APP_PORT,
 		allowedHosts: allowedHosts,
 	},
 	plugins: [

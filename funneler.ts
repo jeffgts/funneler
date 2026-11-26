@@ -30,9 +30,9 @@ const program = new Command()
 program.parse();
 
 const { port: optionPort, script } = program.opts<{ port?: number; script: string }>();
-const port = optionPort ?? (process.env.PORT === undefined ? undefined : Number(process.env.PORT));
+const port = optionPort ?? (process.env.APP_PORT === undefined ? undefined : Number(process.env.APP_PORT));
 if (port === undefined || !isValidPort(port)) {
-  program.error("provide a valid --port <number> or set PORT (1-65535)");
+  program.error("provide a valid --port <number> or set APP_PORT (1-65535)");
 }
 
 const bin = process.env.TAILSCALE_BIN ?? "tailscale";
@@ -42,6 +42,7 @@ const whoamiOutput = execFileSync(bin, ["whoami", "--json"], {
   encoding: "utf8",
   stdio: ["ignore", "pipe", "inherit"]
 });
+
 const whoami: unknown = JSON.parse(whoamiOutput);
 
 if (
