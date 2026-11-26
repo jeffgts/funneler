@@ -1,0 +1,12 @@
+{
+	"extends": "$app/tsconfig",
+	"compilerOptions": {
+		"strict": true,
+		"types": ["node", "$app/types"]
+	},
+	"include": ["src", "vite.config.ts"],
+	"typeAcquisition": {
+		"enable": true
+	},
+	"exclude": ["node_modules", "dist"],
+}
